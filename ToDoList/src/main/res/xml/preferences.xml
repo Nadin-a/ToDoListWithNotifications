@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/pref_show_notifications"
+        android:key="@string/show_notifications_key"
+        android:summaryOff="@string/pref_show_false"
+        android:summaryOn="@string/pref_show_true"
+        android:title="@string/show_notifications_label" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_interval_default"
+        android:key="@string/notifications_time_interval_key"
+        android:title="@string/notifications_time_interval_label" />
+
+</PreferenceScreen>
