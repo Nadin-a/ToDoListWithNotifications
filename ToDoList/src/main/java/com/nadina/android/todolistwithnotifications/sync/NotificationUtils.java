@@ -34,6 +34,8 @@ public class NotificationUtils {
     private static final int TODO_REMINDER_PENDING_INTENT_ID = 3417;
     private static final int ACTION_IGNORE_PENDING_INTENT_ID = 14;
 
+    private static final int PRIORITY_HIGH = 1;
+
 
     public static void clearAllNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager)
@@ -43,8 +45,7 @@ public class NotificationUtils {
 
     public static String sendActionToNotification(Context context) {
         String notification_text = context.getString(R.string.not);
-        int priority = 1;
-        String stringPr = Integer.toString(priority);
+        String stringPr = Integer.toString(PRIORITY_HIGH);
         Uri uri = TaskContract.TaskEntry.CONTENT_URI;
         uri = uri.buildUpon().appendPath(stringPr).build();
 
@@ -53,28 +54,44 @@ public class NotificationUtils {
                 new String[]{
                         TaskContract.TaskEntry.COLUMN_DESCRIPTION},
                 TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?",
-                new String[]{Integer.toString(priority)}, null);
+                new String[]{Integer.toString(PRIORITY_HIGH)}, null);
 
-        if (mCursor == null) {
-            Log.d("====", "cursor is null");
-        } else if (mCursor.getCount() < 1) {
-            Log.d("=====", "cursor < -1");
-        } else {
-            int descriptionIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
-
-            List<String> important_notifications = new ArrayList<>();
-
-            while (mCursor.moveToNext()) {
-                String description = mCursor.getString(descriptionIndex);
-                important_notifications.add(description);
+        if (mCursor != null) {
+            if (mCursor.getCount() < 1) {
+                notification_text = find_others_tasks(context, uri, notification_text);
+            } else {
+                notification_text = find_important_tasks(context, notification_text, mCursor);
             }
+        }
+        return notification_text;
+    }
 
-            if (!important_notifications.isEmpty()) {
-                notification_text = context.getString(R.string.your);
-                for (String s : important_notifications) {
-                    notification_text += "\n" + s;
-                }
-            }
+    private static String find_important_tasks(Context context, String notification_text, Cursor mCursor) {
+        int descriptionIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
+
+        List<String> important_notifications = new ArrayList<>();
+
+        while (mCursor.moveToNext()) {
+            String description = mCursor.getString(descriptionIndex);
+            important_notifications.add(description);
+        }
+        notification_text = context.getString(R.string.your);
+        for (String s : important_notifications) {
+            notification_text += "\n" + s;
+        }
+
+        return notification_text;
+    }
+
+    private static String find_others_tasks(Context context, Uri uri, String notification_text) {
+        Cursor mSecondCursor = context.getContentResolver().query(
+                uri,
+                null,
+                TaskContract.TaskEntry.COLUMN_PRIORITY + " > ?",
+                new String[]{Integer.toString(PRIORITY_HIGH)}, null);
+        Log.d("====", "" + mSecondCursor.getCount());
+        if (mSecondCursor.getCount() > 0) {
+            notification_text = context.getString(R.string.some_tasks);
         }
         return notification_text;
     }

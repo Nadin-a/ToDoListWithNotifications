@@ -89,11 +89,10 @@ public class TaskContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             case TASK_WITH_ID:
-                String priority = uri.getPathSegments().get(1);
                 retCursor = db.query(TABLE_NAME,
                         new String[] {TaskContract.TaskEntry.COLUMN_DESCRIPTION},
                         TaskContract.TaskEntry.COLUMN_PRIORITY + " =? ",
-                        new String[]{priority},
+                        selectionArgs,
                         null,
                         null,
                         sortOrder);

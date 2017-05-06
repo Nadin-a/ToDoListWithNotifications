@@ -72,7 +72,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
             } catch (NumberFormatException e) {
                 error.show();
-                // Snackbar.make(parentView, "Error", Snackbar.LENGTH_LONG).show();
                 return false;
             }
         }
