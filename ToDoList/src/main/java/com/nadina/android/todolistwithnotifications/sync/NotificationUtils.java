@@ -15,7 +15,6 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.nadina.android.todolistwithnotifications.MainActivity;
 import com.nadina.android.todolistwithnotifications.R;
@@ -35,6 +34,7 @@ public class NotificationUtils {
     private static final int ACTION_IGNORE_PENDING_INTENT_ID = 14;
 
     private static final int PRIORITY_HIGH = 1;
+    private static final int PRIORITY_MIDDLE = 2;
 
 
     public static void clearAllNotifications(Context context) {
@@ -86,10 +86,10 @@ public class NotificationUtils {
     private static String find_others_tasks(Context context, Uri uri, String notification_text) {
         Cursor mSecondCursor = context.getContentResolver().query(
                 uri,
-                null,
-                TaskContract.TaskEntry.COLUMN_PRIORITY + " > ?",
-                new String[]{Integer.toString(PRIORITY_HIGH)}, null);
-        Log.d("====", "" + mSecondCursor.getCount());
+                new String[]{
+                        TaskContract.TaskEntry.COLUMN_DESCRIPTION},
+                TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?",
+                new String[]{Integer.toString(PRIORITY_MIDDLE)}, null);
         if (mSecondCursor.getCount() > 0) {
             notification_text = context.getString(R.string.some_tasks);
         }
