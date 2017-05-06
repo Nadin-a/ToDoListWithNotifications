@@ -5,6 +5,7 @@
         <string name="your">Your tasks:</string>
         <string name="close">Close</string>
         <string name="count">Enter correct count of hours</string>
+        <string name="some_tasks">There are a few tasks!</string>
 
         <string name="priority_1">1</string>
         <string name="priority_2">2</string>
