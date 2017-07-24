@@ -43,6 +43,9 @@ public class NotificationUtils {
         notificationManager.cancelAll();
     }
 
+    /**
+     * Forming text for notification. Getting important or middle tasks.
+     */
     public static String sendActionToNotification(Context context) {
         String notification_text = context.getString(R.string.not);
         String stringPr = Integer.toString(PRIORITY_HIGH);
@@ -66,6 +69,9 @@ public class NotificationUtils {
         return notification_text;
     }
 
+    /**
+     Forming text for notification. Important tasks.
+     */
     private static String find_important_tasks(Context context, String notification_text, Cursor mCursor) {
         int descriptionIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
 
@@ -83,6 +89,9 @@ public class NotificationUtils {
         return notification_text;
     }
 
+    /**
+     Forming text for notification. Middle tasks. Open in case there are no important task.
+     */
     private static String find_others_tasks(Context context, Uri uri, String notification_text) {
         Cursor mSecondCursor = context.getContentResolver().query(
                 uri,
@@ -96,7 +105,9 @@ public class NotificationUtils {
         return notification_text;
     }
 
-
+    /**
+     * Building notification
+     */
     public static void remindUser(Context context) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -113,7 +124,6 @@ public class NotificationUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
         }
-
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -148,6 +158,9 @@ public class NotificationUtils {
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    /**
+     * Icon for notification
+     */
     private static Bitmap largeIcon(Context context) {
         Resources res = context.getResources();
         Bitmap largeIcon = BitmapFactory.decodeResource(res, R.drawable.ic_todo);

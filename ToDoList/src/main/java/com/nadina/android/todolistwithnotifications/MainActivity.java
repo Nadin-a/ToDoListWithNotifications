@@ -98,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements
         getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
+    /**
+     * Getting data from content provider
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
 

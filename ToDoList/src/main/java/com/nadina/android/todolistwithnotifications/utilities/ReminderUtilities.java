@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Nadina on 28.04.2017.
+ * Getting time from user.
  */
 
 public class ReminderUtilities {
